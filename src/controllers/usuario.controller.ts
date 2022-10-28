@@ -13,6 +13,7 @@ import {
   response
 } from '@loopback/rest';
 import axios from 'axios';
+import {configuracion} from '../config/config';
 import {Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
 import {AuthService} from '../services';
@@ -46,18 +47,25 @@ export class UsuarioController {
     let clave = this.servicioAuth.GenerarClave();
     let claveCifrada = this.servicioAuth.CifrarClave(clave);
     usuario.password = claveCifrada;
-    let p = await this.usuarioRepository.create(usuario);
 
-    // Notificamos al usuario por correo
-    let destino = usuario.correo;
-    // Notificamos al usuario por telefono y cambiar la url por send_sms
-    // let destino = usuario.telefono;
+    let tipo = ''; //Definimos el tipo de comunicacion
+    tipo = configuracion.tipoNotificacion;
+    let servicioWeb = '';
+    let destino = '';
 
-    let asunto = 'Registro de usuario en plataforma';
-    let contenido = `Hola, ${usuario.nombre} ${usuario.apellidos} su contraseña en el portal es: ${clave}`
+    if (tipo == 'sms') {
+      destino = usuario.telefono;
+      servicioWeb = 'send_sms';
+    } else {
+      destino = usuario.correo;
+      servicioWeb = 'send_email';
+    }
+
+    const asunto = 'Registro de usuario en plataforma';
+    const contenido = `Hola, ${usuario.nombre} ${usuario.apellidos} su contraseña en el portal es: ${clave}`
     axios({
       method: 'post',
-      url: 'http://localhost:5000/send_email', //Si quiero enviar por mensaje cambiar a send_sms
+      url: configuracion.baseURL + servicioWeb,
 
       headers: {
         'Accept': 'application/json',
@@ -74,6 +82,7 @@ export class UsuarioController {
       console.log(err)
     })
 
+    const p = await this.usuarioRepository.create(usuario);
     return p;
   }
 
