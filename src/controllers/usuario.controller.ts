@@ -28,6 +28,7 @@ export class UsuarioController {
     public servicioAuth: AuthService
   ) { }
 
+  @authenticate.skip()
   @post('/usuarios')
   @response(200, {
     description: 'Usuario model instance',
@@ -190,6 +191,7 @@ export class UsuarioController {
   }
 
   //Servicio de login
+  @authenticate.skip()
   @post('/login', {
     responses: {
       '200': {
