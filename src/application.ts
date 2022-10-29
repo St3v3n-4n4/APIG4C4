@@ -1,14 +1,17 @@
+import {AuthenticationComponent, registerAuthenticationStrategy} from '@loopback/authentication';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
-import {
-  RestExplorerBindings,
-  RestExplorerComponent,
-} from '@loopback/rest-explorer';
 import {RepositoryMixin} from '@loopback/repository';
 import {RestApplication} from '@loopback/rest';
+import {
+  RestExplorerBindings,
+  RestExplorerComponent
+} from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
 import {MySequence} from './sequence';
+import {AdministradorStrategy} from './strategies/admin.strategy';
+
 
 export {ApplicationConfig};
 
@@ -40,5 +43,8 @@ export class Apiciclo4Application extends BootMixin(
         nested: true,
       },
     };
+    //Registramos la estrategia
+    registerAuthenticationStrategy(this, AdministradorStrategy);
+    this.component(AuthenticationComponent);
   }
 }
