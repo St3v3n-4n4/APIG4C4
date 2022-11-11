@@ -1,31 +1,28 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  post,
-  param,
-  get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
-  requestBody,
-  response,
+  del, get,
+  getModelSchemaRef, param, patch, post, put, requestBody,
+  response
 } from '@loopback/rest';
 import {Aeropuerto} from '../models';
 import {AeropuertoRepository} from '../repositories';
 
+@authenticate("admin")
 export class AeropuertoController {
   constructor(
     @repository(AeropuertoRepository)
-    public aeropuertoRepository : AeropuertoRepository,
-  ) {}
+    public aeropuertoRepository: AeropuertoRepository,
+  ) { }
 
+  @authenticate.skip()
   @post('/aeropuertos')
   @response(200, {
     description: 'Aeropuerto model instance',

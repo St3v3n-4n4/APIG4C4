@@ -1,4 +1,4 @@
-import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {Aeropuerto} from './aeropuerto.model';
 import {Vuelo} from './vuelo.model';
 
@@ -10,18 +10,6 @@ export class Ruta extends Entity {
     generated: true,
   })
   id?: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  origen: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  destino: string;
 
   @property({
     type: 'number',
