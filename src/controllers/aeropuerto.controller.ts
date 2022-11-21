@@ -55,6 +55,7 @@ export class AeropuertoController {
     return this.aeropuertoRepository.count(where);
   }
 
+  @authenticate.skip()
   @get('/aeropuertos')
   @response(200, {
     description: 'Array of Aeropuerto model instances',
@@ -92,6 +93,7 @@ export class AeropuertoController {
     return this.aeropuertoRepository.updateAll(aeropuerto, where);
   }
 
+  @authenticate.skip()
   @get('/aeropuertos/{id}')
   @response(200, {
     description: 'Aeropuerto model instance',

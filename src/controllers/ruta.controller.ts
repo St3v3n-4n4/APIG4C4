@@ -55,6 +55,7 @@ export class RutaController {
     return this.rutaRepository.count(where);
   }
 
+  @authenticate.skip()
   @get('/rutas')
   @response(200, {
     description: 'Array of Ruta model instances',
